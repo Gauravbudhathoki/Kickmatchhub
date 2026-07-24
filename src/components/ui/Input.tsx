@@ -33,10 +33,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           {isPassword && (
             <button
               type="button"
-              onClick={() => setRevealed((v) => !v)}
+              onClick={() => {
+                console.log("eye button clicked, revealed was:", revealed);
+                setRevealed((v) => !v);
+              }}
               aria-label={revealed ? "Hide password" : "Show password"}
               aria-pressed={revealed}
-              className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-moss hover:text-soil"
+              className="absolute inset-y-0 right-0 z-10 flex w-11 items-center justify-center text-moss hover:text-soil cursor-pointer"
             >
               {revealed ? <EyeOffIcon /> : <EyeIcon />}
             </button>
