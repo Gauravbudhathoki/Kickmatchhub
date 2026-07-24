@@ -68,7 +68,7 @@ export default function LoginPage() {
     >
       <Card>
         {stage === "password" ? (
-          <form onSubmit={handlePasswordSubmit} className="flex flex-col gap-5">
+          <form method="post" onSubmit={handlePasswordSubmit} className="flex flex-col gap-5">
             <Input
               label="Email"
               type="email"
@@ -97,7 +97,7 @@ export default function LoginPage() {
             </Button>
           </form>
         ) : (
-          <form onSubmit={handleMfaSubmit} className="flex flex-col gap-5">
+          <form method="post" onSubmit={handleMfaSubmit} className="flex flex-col gap-5">
             <Input
               label={useBackupCode ? "Backup code" : "Verification code"}
               type="text"

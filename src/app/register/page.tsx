@@ -34,7 +34,7 @@ export default function RegisterPage() {
   return (
     <AuthLayout title="Join KickMatch Hub" subtitle="Create your account, then find your team.">
       <Card>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <form method="post" onSubmit={handleSubmit} className="flex flex-col gap-5">
           <Input
             label="Username"
             type="text"
