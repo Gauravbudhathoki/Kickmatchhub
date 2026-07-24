@@ -20,6 +20,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         </label>
         <div className="relative">
           <input
+            key={isPassword ? (revealed ? "text" : "password") : "default"}
             ref={ref}
             id={inputId}
             type={isPassword ? (revealed ? "text" : "password") : type}
@@ -33,10 +34,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           {isPassword && (
             <button
               type="button"
-              onClick={() => {
-                console.log("eye button clicked, revealed was:", revealed);
-                setRevealed((v) => !v);
-              }}
+              onClick={() => setRevealed((v) => !v)}
               aria-label={revealed ? "Hide password" : "Show password"}
               aria-pressed={revealed}
               className="absolute inset-y-0 right-0 z-10 flex w-11 items-center justify-center text-moss hover:text-soil cursor-pointer"
