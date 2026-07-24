@@ -20,10 +20,7 @@ export default function LandingPage() {
               KickMatch Hub
             </span>
             <div className="flex items-center gap-3">
-              
-                href="/login"
-                className="rounded-full px-4 py-2 text-sm font-semibold text-chalk/80 transition hover:text-chalk"
-              >
+              <a href="/login" className="rounded-full px-4 py-2 text-sm font-semibold text-chalk/80 transition hover:text-chalk">
                 Log in
               </a>
               <Button variant="secondary" className="text-sm px-5 py-2">
