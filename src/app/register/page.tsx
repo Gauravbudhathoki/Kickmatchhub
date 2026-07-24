@@ -38,6 +38,7 @@ export default function RegisterPage() {
           <Input
             label="Username"
             type="text"
+            name="username"
             autoComplete="username"
             required
             minLength={3}
@@ -48,6 +49,7 @@ export default function RegisterPage() {
           <Input
             label="Email"
             type="email"
+            name="email"
             autoComplete="email"
             required
             value={email}
@@ -56,6 +58,7 @@ export default function RegisterPage() {
           <Input
             label="Password"
             type="password"
+            name="new-password"
             autoComplete="new-password"
             required
             minLength={12}
@@ -77,9 +80,9 @@ export default function RegisterPage() {
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-moss">
+        <p className="mt-6 text-center text-sm text-soil/70">
           Already have an account?{" "}
-          <a href="/login" className="font-semibold text-turf-dark hover:underline">
+          <a href="/login" className="font-bold text-clay underline underline-offset-2 hover:text-clay-light">
             Log in
           </a>
         </p>
