@@ -176,3 +176,48 @@ export function decideMatchRequest(matchId: string, decision: "accept" | "reject
     body: JSON.stringify({ decision }),
   });
 }
+
+export function updateProfile(input: { displayName?: string; bio?: string; position?: string }) {
+  return request<{ id: string; username: string; profile: FullProfile["profile"] }>("/api/profile/me", {
+    method: "PATCH",
+    body: JSON.stringify(input),
+  });
+}
+
+export async function exportMyData(): Promise<void> {
+  const res = await fetch(`${API_URL}/api/profile/export`, { credentials: "include" });
+  if (!res.ok) throw new ApiError("Failed to export data.", res.status);
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "kickmatch-export.json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// --- MFA ---
+
+export interface MfaSetupResponse {
+  otpauthUrl: string;
+  qrCodeDataUrl: string;
+  manualEntrySecret: string;
+}
+
+export function setupMfa() {
+  return request<MfaSetupResponse>("/api/mfa/setup", { method: "POST" });
+}
+
+export function verifyMfaSetup(code: string) {
+  return request<{ message: string; backupCodes: string[] }>("/api/mfa/verify", {
+    method: "POST",
+    body: JSON.stringify({ code }),
+  });
+}
+
+export function disableMfa(password: string) {
+  return request<{ message: string }>("/api/mfa/disable", {
+    method: "POST",
+    body: JSON.stringify({ password }),
+  });
+}
