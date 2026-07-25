@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { Card } from "@/components/ui/Card";
@@ -16,8 +16,7 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  async function submit() {
     setError(null);
     setLoading(true);
 
@@ -34,7 +33,7 @@ export default function RegisterPage() {
   return (
     <AuthLayout title="Join KickMatch Hub" subtitle="Create your account, then find your team.">
       <Card>
-        <form method="post" onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5">
           <Input
             label="Username"
             type="text"
@@ -64,6 +63,12 @@ export default function RegisterPage() {
             minLength={12}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                submit();
+              }
+            }}
           />
           <p className="-mt-2 text-xs text-moss">
             At least 12 characters, with uppercase, lowercase, a number, and a symbol.
@@ -75,10 +80,10 @@ export default function RegisterPage() {
             </p>
           )}
 
-          <Button type="submit" variant="primary" disabled={loading} className="mt-2 w-full">
+          <Button type="button" variant="primary" disabled={loading} className="mt-2 w-full" onClick={submit}>
             {loading ? "Creating account…" : "Create account"}
           </Button>
-        </form>
+        </div>
 
         <p className="mt-6 text-center text-sm text-soil/70">
           Already have an account?{" "}
