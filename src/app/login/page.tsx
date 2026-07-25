@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AuthLayout } from "@/components/layout/AuthLayout";
 import { Card } from "@/components/ui/Card";
@@ -21,8 +21,7 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  async function handlePasswordSubmit(e: FormEvent) {
-    e.preventDefault();
+  async function submitPassword() {
     setError(null);
     setLoading(true);
 
@@ -41,8 +40,7 @@ export default function LoginPage() {
     }
   }
 
-  async function handleMfaSubmit(e: FormEvent) {
-    e.preventDefault();
+  async function submitMfa() {
     if (!pendingToken) return;
     setError(null);
     setLoading(true);
@@ -68,10 +66,11 @@ export default function LoginPage() {
     >
       <Card>
         {stage === "password" ? (
-          <form method="post" onSubmit={handlePasswordSubmit} className="flex flex-col gap-5">
+          <div className="flex flex-col gap-5">
             <Input
               label="Email"
               type="email"
+              name="email"
               autoComplete="email"
               required
               value={email}
@@ -80,10 +79,17 @@ export default function LoginPage() {
             <Input
               label="Password"
               type="password"
+              name="current-password"
               autoComplete="current-password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  submitPassword();
+                }
+              }}
             />
 
             {error && (
@@ -92,12 +98,18 @@ export default function LoginPage() {
               </p>
             )}
 
-            <Button type="submit" variant="primary" disabled={loading} className="mt-2 w-full">
+            <Button
+              type="button"
+              variant="primary"
+              disabled={loading}
+              className="mt-2 w-full"
+              onClick={submitPassword}
+            >
               {loading ? "Logging in…" : "Log in"}
             </Button>
-          </form>
+          </div>
         ) : (
-          <form method="post" onSubmit={handleMfaSubmit} className="flex flex-col gap-5">
+          <div className="flex flex-col gap-5">
             <Input
               label={useBackupCode ? "Backup code" : "Verification code"}
               type="text"
@@ -106,6 +118,12 @@ export default function LoginPage() {
               placeholder={useBackupCode ? "XXXXX-XXXXX" : "123456"}
               value={code}
               onChange={(e) => setCode(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  submitMfa();
+                }
+              }}
             />
 
             {error && (
@@ -114,7 +132,7 @@ export default function LoginPage() {
               </p>
             )}
 
-            <Button type="submit" variant="primary" disabled={loading} className="mt-2 w-full">
+            <Button type="button" variant="primary" disabled={loading} className="mt-2 w-full" onClick={submitMfa}>
               {loading ? "Verifying…" : "Verify"}
             </Button>
 
@@ -129,13 +147,13 @@ export default function LoginPage() {
             >
               {useBackupCode ? "Use an authenticator code instead" : "Use a backup code instead"}
             </button>
-          </form>
+          </div>
         )}
 
         {stage === "password" && (
-          <p className="mt-6 text-center text-sm text-moss">
+          <p className="mt-6 text-center text-sm text-soil/70">
             New here?{" "}
-            <a href="/register" className="font-semibold text-turf-dark hover:underline">
+            <a href="/register" className="font-bold text-clay underline underline-offset-2 hover:text-clay-light">
               Create an account
             </a>
           </p>
