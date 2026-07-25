@@ -136,3 +136,43 @@ export function decideJoinRequest(teamId: string, membershipId: string, decision
     body: JSON.stringify({ decision }),
   });
 }
+
+// --- Match requests ---
+
+export interface MatchRequestRecord {
+  id: string;
+  requestingTeamId: string;
+  opponentTeamId: string;
+  proposedDate: string;
+  venue: string;
+  status: "pending" | "accepted" | "rejected" | "cancelled" | "completed";
+  createdBy: string;
+  decidedBy: string | null;
+}
+
+export function createMatchRequest(input: {
+  requestingTeamId: string;
+  opponentTeamId: string;
+  proposedDate: string;
+  venue: string;
+}) {
+  return request<MatchRequestRecord>("/api/matches/request", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+}
+
+export function listMatchesForTeam(teamId: string) {
+  return request<MatchRequestRecord[]>(`/api/matches/team/${teamId}`);
+}
+
+export function listIncomingMatchRequests(teamId: string) {
+  return request<MatchRequestRecord[]>(`/api/matches/team/${teamId}/incoming`);
+}
+
+export function decideMatchRequest(matchId: string, decision: "accept" | "reject") {
+  return request<MatchRequestRecord>(`/api/matches/${matchId}/decide`, {
+    method: "PATCH",
+    body: JSON.stringify({ decision }),
+  });
+}
