@@ -1,13 +1,16 @@
 import { ButtonHTMLAttributes, forwardRef } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "ghost";
+  variant?: "primary" | "secondary" | "outline" | "ghost";
 }
 
 const variantClasses: Record<NonNullable<ButtonProps["variant"]>, string> = {
   primary:
     "bg-clay text-chalk hover:bg-clay-light active:bg-clay shadow-[0_4px_0_0_rgba(32,28,21,0.25)] hover:shadow-[0_2px_0_0_rgba(32,28,21,0.25)] hover:translate-y-[2px]",
-  secondary: "bg-transparent text-chalk border-2 border-chalk/40 hover:border-chalk hover:bg-chalk/10",
+  secondary:
+    "bg-transparent text-chalk border-2 border-chalk/40 hover:border-chalk hover:bg-chalk/10",
+  outline:
+    "bg-transparent text-clay border-2 border-clay/40 hover:border-clay hover:bg-clay/5",
   ghost: "bg-transparent text-soil hover:bg-soil/5",
 };
 

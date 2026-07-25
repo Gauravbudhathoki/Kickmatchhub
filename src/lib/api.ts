@@ -83,3 +83,56 @@ export interface FullProfile extends PublicUser {
 export function getMe() {
   return request<FullProfile>("/api/profile/me");
 }
+
+// --- Teams ---
+
+export interface Team {
+  id: string;
+  name: string;
+  description: string;
+  captainId: string;
+}
+
+export interface TeamDetail extends Team {
+  roster: { userId: string; username: string; displayName: string; position: string }[];
+}
+
+export interface PendingJoinRequest {
+  membershipId: string;
+  userId: string;
+  username: string;
+  displayName: string;
+  requestedAt: string;
+}
+
+export function listTeams() {
+  return request<Team[]>("/api/teams");
+}
+
+export function createTeam(input: { name: string; description?: string }) {
+  return request<Team>("/api/teams", {
+    method: "POST",
+    body: JSON.stringify(input),
+  });
+}
+
+export function getTeam(id: string) {
+  return request<TeamDetail>(`/api/teams/${id}`);
+}
+
+export function joinTeam(id: string) {
+  return request<{ membershipId: string; status: string }>(`/api/teams/${id}/join`, {
+    method: "POST",
+  });
+}
+
+export function listPendingRequests(teamId: string) {
+  return request<PendingJoinRequest[]>(`/api/teams/${teamId}/requests`);
+}
+
+export function decideJoinRequest(teamId: string, membershipId: string, decision: "approve" | "reject") {
+  return request<{ membershipId: string; status: string }>(`/api/teams/${teamId}/requests/${membershipId}`, {
+    method: "PATCH",
+    body: JSON.stringify({ decision }),
+  });
+}
