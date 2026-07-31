@@ -221,3 +221,34 @@ export function disableMfa(password: string) {
     body: JSON.stringify({ password }),
   });
 }
+
+// --- Admin ---
+
+export interface AdminUser extends PublicUser {
+  disabled: boolean;
+  createdAt: string;
+}
+
+export function listAdminUsers() {
+  return request<AdminUser[]>("/api/admin/users");
+}
+
+export function changeUserRole(id: string, role: "player" | "captain" | "admin") {
+  return request<AdminUser>(`/api/admin/users/${id}/role`, {
+    method: "PATCH",
+    body: JSON.stringify({ role }),
+  });
+}
+
+export function setUserDisabled(id: string, disabled: boolean) {
+  return request<AdminUser>(`/api/admin/users/${id}/disabled`, {
+    method: "PATCH",
+    body: JSON.stringify({ disabled }),
+  });
+}
+
+export function forceLogoutUser(id: string) {
+  return request<{ message: string }>(`/api/admin/users/${id}/force-logout`, {
+    method: "POST",
+  });
+}
