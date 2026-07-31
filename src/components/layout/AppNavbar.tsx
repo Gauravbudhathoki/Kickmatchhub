@@ -34,11 +34,7 @@ export function AppNavbar({ user }: { user: PublicUser }) {
           <Link href="/matches" className="hover:text-soil">
             Matches
           </Link>
-          {user.role === "admin" && (
-            <Link href="/admin" className="hover:text-soil">
-              Admin
-            </Link>
-          )}
+          
           <Link href="/profile" className="hover:text-soil">
             Profile
           </Link>
