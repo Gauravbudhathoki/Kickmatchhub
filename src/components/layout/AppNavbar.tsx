@@ -10,6 +10,8 @@ export function AppNavbar({ user }: { user: PublicUser }) {
   async function handleLogout() {
     try {
       await logout();
+    } catch (err) {
+      console.error("Logout failed:", err);
     } finally {
       router.push("/login");
     }
